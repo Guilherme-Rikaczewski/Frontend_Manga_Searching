@@ -1,6 +1,16 @@
 import './SearchBar.css';
+import {searchManga} from '../../../../services/searchService'
 
 export function SearchBar() {
+
+  const handle_click = async () => {
+    let text = document.getElementById('manga-search').value
+    console.log(text)
+    let result = await searchManga(text)
+    console.log(result)
+    alert(result)
+  }
+
   return (
     <form className="search-bar" role="search">
       <label className="search-bar__label" htmlFor="manga-search">
@@ -15,7 +25,7 @@ export function SearchBar() {
         autoComplete="off"
       />
 
-      <button className="search-bar__button" type="submit" aria-label="Pesquisar">
+      <button className="search-bar__button" type="button" aria-label="Pesquisar" onClick={handle_click}>
         <svg
           aria-hidden="true"
           width="27"
