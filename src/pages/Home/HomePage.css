@@ -1,6 +1,8 @@
 .home-page {
   min-height: 100vh;
-  background: #ffffff;
+  /* background-color: #ffffff; */
+  background: #FFF0BC;
+  /* background: #FFEAA6; */
 }
 
 .home-page__content {
