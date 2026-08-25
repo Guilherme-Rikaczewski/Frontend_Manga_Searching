@@ -1,0 +1,37 @@
+.home-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.home-page__content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 86px 24px 0;
+}
+
+.home-page__title {
+  margin: 0 0 64px;
+  color: #ed5a5a;
+  font-family: 'Joti One', 'Comic Sans MS', fantasy;
+  font-size: clamp(4.25rem, 7vw, 8rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0;
+  text-align: center;
+  paint-order: stroke fill;
+  text-shadow: 4px 6px 0 #2c2c2c;
+  -webkit-text-stroke: 5px #2c2c2c;
+}
+
+@media (max-width: 640px) {
+  .home-page__content {
+    padding-top: 72px;
+  }
+
+  .home-page__title {
+    margin-bottom: 28px;
+    text-shadow: 2px 4px 0 #2c2c2c;
+    -webkit-text-stroke-width: 2px;
+  }
+}
