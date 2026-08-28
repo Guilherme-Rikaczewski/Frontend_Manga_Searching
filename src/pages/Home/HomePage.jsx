@@ -1,7 +1,7 @@
-import { AppHeader } from '../../shared/components/AppHeader/AppHeader.jsx';
-import { SearchBar } from './components/SearchBar/SearchBar.jsx';
+import { AppHeader } from "../../shared/components/AppHeader/AppHeader.jsx";
+import { SearchBar } from "./components/SearchBar/SearchBar.jsx";
 
-import './HomePage.css';
+import "./HomePage.css";
 
 export function HomePage() {
   return (

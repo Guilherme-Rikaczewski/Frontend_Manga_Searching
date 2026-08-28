@@ -1,10 +1,22 @@
-import axios from "axios"
+import axios from "axios";
 
-const apiBaseUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8000"
+import { normalizeHttpError } from "../shared/errors/normalizeHttpError";
+
+const apiBaseUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+
+/** Sem timeout, uma API travada deixaria a interface carregando para sempre. */
+export const REQUEST_TIMEOUT_MS = 10_000;
 
 const api = axios.create({
   baseURL: apiBaseUrl,
   withCredentials: false,
-})
+  timeout: REQUEST_TIMEOUT_MS,
+});
 
-export default api
+// Qualquer falha de rede/HTTP chega às telas já como AppError traduzido.
+api.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(normalizeHttpError(error)),
+);
+
+export default api;
