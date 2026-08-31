@@ -1,9 +1,13 @@
 import { AppHeader } from '../../shared/components/AppHeader/AppHeader.jsx';
 import { SearchBar } from './components/SearchBar/SearchBar.jsx';
+import { useState } from 'react';
 
 import './HomePage.css';
 
 export function HomePage() {
+
+  const [result, setResult] = useState(null);
+
   return (
     <main className="home-page">
       <AppHeader />
@@ -13,7 +17,14 @@ export function HomePage() {
           Manga Searching
         </h1>
 
-        <SearchBar />
+        <SearchBar setResult={setResult}/>
+
+        {result && (
+          <div>
+            {JSON.stringify(result)}
+          </div>
+        )}
+
       </section>
     </main>
   );

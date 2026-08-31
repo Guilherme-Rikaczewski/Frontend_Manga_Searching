@@ -1,7 +1,7 @@
 import './SearchBar.css';
 import {searchManga} from '../../../../services/searchService'
 
-export function SearchBar() {
+export function SearchBar({ setResult }) {
 
   const handle_click = async () => {
     let text = document.getElementById('manga-search').value
@@ -9,6 +9,7 @@ export function SearchBar() {
     let result = await searchManga(text)
     console.log(result)
     alert(result)
+    setResult(result)
   }
 
   return (
