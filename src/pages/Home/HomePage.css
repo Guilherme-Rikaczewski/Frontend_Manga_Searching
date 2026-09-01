@@ -1,7 +1,7 @@
 .home-page {
   min-height: 100vh;
-  /* background-color: #ffffff; */
   background: #FFF0BC;
+  /* background: #FFFAE4; */
   /* background: #FFEAA6; */
   position: relative;
   min-height: 100vh;
@@ -19,6 +19,12 @@
 
     opacity: 0.1;
     z-index: 0;
+
+    transition: opacity 0.8s ease;
+}
+
+.home-page--has-result::before {
+  opacity: 0;
 }
 
 .home-page > * {
@@ -58,4 +64,11 @@
     text-shadow: 2px 4px 0 #2c2c2c;
     -webkit-text-stroke-width: 2px;
   }
+}
+
+.manga-result {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }

@@ -18,7 +18,7 @@ const SEARCH_HINT =
 // Dica do controle: o que aquele botão faz. Curta — o balão não é manual.
 const BUTTON_HINT = "Buscar preços nas lojas (ou tecle Enter)";
 
-export function SearchBar() {
+export function SearchBar({ setResult }) {
   const inputId = useId();
   const feedbackId = useId();
 
@@ -104,6 +104,13 @@ export function SearchBar() {
   };
 
   const hasError = Boolean(error);
+
+
+  const handle_click = async () => {
+    let text = document.getElementById('manga-search').value
+    let result = await searchManga(text)
+    setResult(result)
+  }
 
   return (
     <div className="search-bar-field">

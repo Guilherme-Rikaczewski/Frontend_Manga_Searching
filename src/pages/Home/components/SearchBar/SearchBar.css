@@ -9,6 +9,7 @@
   padding: 3px;
   border-radius: 999px;
   background: var(--search-gradient);
+  margin-bottom: 50px;
 }
 
 .search-bar__label {
