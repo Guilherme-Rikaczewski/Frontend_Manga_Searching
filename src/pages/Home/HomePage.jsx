@@ -22,11 +22,11 @@ export function HomePage() {
 
         {
           result && <div className='manga-result'>
-            {result.opcoes.map((mangaInfo, index) => (
+            {result.options.map((mangaInfo, index) => (
               <MangaCard
                 key={`${mangaInfo.nome}-${index}`}
                 mangaInfo={mangaInfo}
-                media={result.preco_medio}
+                media={result.priceAvg}
               />
             ))}
           </div>

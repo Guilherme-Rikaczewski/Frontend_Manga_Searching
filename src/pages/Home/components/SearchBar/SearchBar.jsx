@@ -67,27 +67,16 @@ export function SearchBar({ setResult }) {
     setStatus(null);
 
     try {
-      const { options, priceMin, failedSources } = await searchManga(value, {
-        signal: controller.signal,
-      });
+      let text = term
+      let result = await searchManga(text)
 
-      if (options.length === 0) {
+      if (result.options.length === 0) {
         setStatus(`Nenhum mangá encontrado para "${value}".`);
         return;
       }
 
-      const menorPreco =
-        priceMin != null ? ` A partir de R$ ${priceMin.toFixed(2)}.` : "";
-      // Busca parcial: houve resultado, mas alguma loja não respondeu.
-      const parcial =
-        failedSources.length > 0
-          ? ` (sem resposta de: ${failedSources.join(", ")})`
-          : "";
+      setResult(result)
 
-      setStatus(
-        `${options.length} opção(ões) encontrada(s) para "${value}".` +
-          `${menorPreco}${parcial}`,
-      );
     } catch (appError) {
       // Busca abortada por outra mais recente: não é erro para o usuário.
       if (appError.kind === ErrorKind.CANCELED) return;
@@ -106,8 +95,8 @@ export function SearchBar({ setResult }) {
   const hasError = Boolean(error);
 
 
-  const handle_click = async () => {
-    let text = document.getElementById('manga-search').value
+  const handlClick = async () => {
+    let text = term
     let result = await searchManga(text)
     setResult(result)
   }
@@ -137,6 +126,7 @@ export function SearchBar({ setResult }) {
           aria-describedby={feedbackId}
           onChange={handleChange}
           onBlur={handleBlur}
+          onClick={handlClick}
         />
 
         <Tooltip text={BUTTON_HINT} position="bottom">
