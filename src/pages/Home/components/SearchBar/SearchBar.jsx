@@ -1,18 +1,38 @@
-import './SearchBar.css';
-import {searchManga} from '../../../../services/searchService'
+import { useState } from 'react'
+import './SearchBar.css'
+import { searchManga } from '../../../../services/searchService'
+import { useToast } from '../../../../shared/components/ToastGlobal/Toast'
 
 export function SearchBar() {
+  const [search, setSearch] = useState('')
+  const { showToast } = useToast()
 
   const handle_click = async () => {
-    let text = document.getElementById('manga-search').value
-    console.log(text)
-    let result = await searchManga(text)
-    console.log(result)
-    alert(result)
+    const text = search.trim()
+
+    if (!text) {
+      showToast('Digite o nome de um mangá para pesquisar.', 'error')
+      return
+    }
+
+    try {
+      const result = await searchManga(text)
+      showToast('Pesquisa realizada com sucesso!', 'success')
+    } catch (error) {
+      console.error(error)
+      showToast('Ocorreu um erro ao realizar a pesquisa.', 'error')
+    }
   }
 
   return (
-    <form className="search-bar" role="search">
+    <form
+      className="search-bar"
+      role="search"
+      onSubmit={(event) => {
+        event.preventDefault()
+        handle_click()
+      }}
+    >
       <label className="search-bar__label" htmlFor="manga-search">
         Pesquise pelo seu mangá
       </label>
@@ -23,9 +43,15 @@ export function SearchBar() {
         type="search"
         placeholder="Pesquise pelo seu mangá"
         autoComplete="off"
+        value={search}
+        onChange={(event) => setSearch(event.target.value)}
       />
 
-      <button className="search-bar__button" type="button" aria-label="Pesquisar" onClick={handle_click}>
+      <button
+        className="search-bar__button"
+        type="submit"
+        aria-label="Pesquisar"
+      >
         <svg
           aria-hidden="true"
           width="27"
@@ -40,6 +66,7 @@ export function SearchBar() {
           />
         </svg>
       </button>
+
     </form>
-  );
+  )
 }
