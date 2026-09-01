@@ -3,7 +3,7 @@ import { SearchBar } from './components/SearchBar/SearchBar.jsx';
 import { useState } from 'react';
 import { MangaCard } from './components/MangaCard/MangaCard.jsx';
 
-import './HomePage.css';
+import "./HomePage.css";
 
 export function HomePage() {
 
