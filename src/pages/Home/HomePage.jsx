@@ -10,7 +10,7 @@ export function HomePage() {
   const [result, setResult] = useState(null);
 
   return (
-    <main className="home-page">
+    <main className={`home-page ${result ? 'home-page--has-result' : ''}`}>
       <AppHeader />
 
       <section className="home-page__content" aria-labelledby="home-title">
@@ -20,15 +20,20 @@ export function HomePage() {
 
         <SearchBar setResult={setResult}/>
 
-        {/* {result && (
-          <div>
-            {JSON.stringify(result)}
+        {
+          result && <div className='manga-result'>
+            {result.opcoes.map((mangaInfo, index) => (
+              <MangaCard
+                key={`${mangaInfo.nome}-${index}`}
+                mangaInfo={mangaInfo}
+                media={result.preco_medio}
+              />
+            ))}
           </div>
-        )} */}
+        }
 
 
       </section>
-      <MangaCard />
     </main>
   );
 }

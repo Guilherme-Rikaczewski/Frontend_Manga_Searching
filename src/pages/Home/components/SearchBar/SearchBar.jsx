@@ -5,10 +5,7 @@ export function SearchBar({ setResult }) {
 
   const handle_click = async () => {
     let text = document.getElementById('manga-search').value
-    console.log(text)
     let result = await searchManga(text)
-    console.log(result)
-    alert(result)
     setResult(result)
   }
 
