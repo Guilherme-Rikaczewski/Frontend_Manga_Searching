@@ -4,25 +4,48 @@ import { normalizeHttpError } from "../shared/errors/normalizeHttpError";
 import { validateSearchText } from "../shared/validation/searchValidation";
 
 /**
- * Garante que a resposta tem o formato esperado (uma lista de mangás).
+ * Garante que a resposta tem o formato esperado.
  * Um backend fora do contrato não pode quebrar a renderização.
+ *
+ * O contrato da API (GET /search/) é:
+ * { manga, total_opcoes, preco_minimo, preco_medio,
+ *   fontes_consultadas, fontes_com_falha, opcoes: [...] }
+ *
+ * @returns {{ options: Array, priceMin: number|null, priceAvg: number|null,
+ *             failedSources: string[] }}
  */
 function parseSearchResponse(data) {
-  if (Array.isArray(data)) return data;
-  if (Array.isArray(data?.results)) return data.results;
-  if (Array.isArray(data?.data)) return data.data;
+  // Lista pura (ou `results`/`data`) cobre formatos alternativos da API.
+  const options =
+    (Array.isArray(data) && data) ||
+    (Array.isArray(data?.opcoes) && data.opcoes) ||
+    (Array.isArray(data?.results) && data.results) ||
+    (Array.isArray(data?.data) && data.data) ||
+    null;
 
-  throw new AppError(
-    "O servidor devolveu uma resposta inesperada.",
-    ErrorKind.SERVER,
-    { retryable: true },
-  );
+  if (!options) {
+    throw new AppError(
+      "O servidor devolveu uma resposta inesperada.",
+      ErrorKind.SERVER,
+      { retryable: true },
+    );
+  }
+
+  return {
+    options,
+    priceMin: data?.preco_minimo ?? null,
+    priceAvg: data?.preco_medio ?? null,
+    failedSources: Array.isArray(data?.fontes_com_falha)
+      ? data.fontes_com_falha
+      : [],
+  };
 }
 
 /**
  * @param {string} searchText termo digitado pelo usuário
  * @param {{ signal?: AbortSignal }} [options] permite cancelar a requisição
- * @returns {Promise<Array>} lista de mangás
+ * @returns {Promise<{ options: Array, priceMin: number|null,
+ *                     priceAvg: number|null, failedSources: string[] }>}
  * @throws {AppError} sempre um AppError com mensagem pronta para exibição
  */
 export const searchManga = async (searchText, { signal } = {}) => {

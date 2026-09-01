@@ -103,6 +103,27 @@
   width: min(508px, calc(100vw - 48px));
 }
 
+.search-bar__help {
+  margin-top: 10px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #7a5c5c;
+  font-size: 0.8rem;
+  cursor: help; /* o cursor de interrogação já anuncia que ali tem explicação */
+}
+
+.search-bar__help:hover,
+.search-bar__help:focus-visible {
+  color: #2c2c2c;
+}
+
+.search-bar__help:focus-visible {
+  outline: 2px solid rgba(44, 44, 44, 0.45);
+  outline-offset: 2px;
+}
+
 .search-bar__feedback {
   min-height: 1.25rem; /* reserva o espaço para o layout não "pular" */
   margin: 10px 0 0;

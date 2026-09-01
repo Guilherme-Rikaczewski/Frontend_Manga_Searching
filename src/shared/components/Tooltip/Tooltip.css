@@ -19,10 +19,16 @@
   color: #ffffff;
   font: 400 0.8rem/1.35 Arial, Helvetica, sans-serif;
   text-align: center;
+
+  /* Escondido só com opacity, de propósito.
+     `display: none` e `visibility: hidden` tiram o elemento da árvore de
+     acessibilidade — o aria-describedby apontaria para o nada e o leitor de
+     tela não anunciaria a dica. Com opacity o texto continua acessível.
+     pointer-events: none impede que a bolha invisível roube o clique. */
   opacity: 0;
-  visibility: hidden;
+  pointer-events: none;
   transform: translateX(-50%);
-  transition: opacity 150ms ease, visibility 150ms ease;
+  transition: opacity 150ms ease;
 }
 
 .tooltip__bubble--top {
@@ -35,7 +41,6 @@
 
 .tooltip__bubble[data-visible="true"] {
   opacity: 1;
-  visibility: visible;
 }
 
 /* Setinha apontando para o elemento âncora. */

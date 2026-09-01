@@ -4,12 +4,19 @@ import "./SearchBar.css";
 import { searchManga } from "../../../../services/searchService";
 import { ErrorKind } from "../../../../shared/errors/AppError";
 import { Tooltip } from "../../../../shared/components/Tooltip/Tooltip";
-import { maskSearchText, SEARCH_MAX_LENGTH } from "../../../../shared/utils/masks";
+import {
+  maskSearchText,
+  SEARCH_MAX_LENGTH,
+} from "../../../../shared/utils/masks";
 import { validateSearchText } from "../../../../shared/validation/searchValidation";
 
+// Dica das regras do campo: o que o usuário precisa saber ANTES de digitar.
 const SEARCH_HINT =
   `Digite o título do mangá (mín. 2 e máx. ${SEARCH_MAX_LENGTH} caracteres). ` +
   "Acentos são aceitos; símbolos como @ # $ são removidos automaticamente.";
+
+// Dica do controle: o que aquele botão faz. Curta — o balão não é manual.
+const BUTTON_HINT = "Buscar preços nas lojas (ou tecle Enter)";
 
 export function SearchBar() {
   const inputId = useId();
@@ -60,12 +67,26 @@ export function SearchBar() {
     setStatus(null);
 
     try {
-      const results = await searchManga(value, { signal: controller.signal });
+      const { options, priceMin, failedSources } = await searchManga(value, {
+        signal: controller.signal,
+      });
+
+      if (options.length === 0) {
+        setStatus(`Nenhum mangá encontrado para "${value}".`);
+        return;
+      }
+
+      const menorPreco =
+        priceMin != null ? ` A partir de R$ ${priceMin.toFixed(2)}.` : "";
+      // Busca parcial: houve resultado, mas alguma loja não respondeu.
+      const parcial =
+        failedSources.length > 0
+          ? ` (sem resposta de: ${failedSources.join(", ")})`
+          : "";
 
       setStatus(
-        results.length === 0
-          ? `Nenhum mangá encontrado para "${value}".`
-          : `${results.length} mangá(s) encontrado(s) para "${value}".`,
+        `${options.length} opção(ões) encontrada(s) para "${value}".` +
+          `${menorPreco}${parcial}`,
       );
     } catch (appError) {
       // Busca abortada por outra mais recente: não é erro para o usuário.
@@ -86,7 +107,12 @@ export function SearchBar() {
 
   return (
     <div className="search-bar-field">
-      <form className="search-bar" role="search" onSubmit={handleSubmit} noValidate>
+      <form
+        className="search-bar"
+        role="search"
+        onSubmit={handleSubmit}
+        noValidate
+      >
         <label className="search-bar__label" htmlFor={inputId}>
           Pesquise pelo seu mangá
         </label>
@@ -106,7 +132,7 @@ export function SearchBar() {
           onBlur={handleBlur}
         />
 
-        <Tooltip text={SEARCH_HINT} position="bottom">
+        <Tooltip text={BUTTON_HINT} position="bottom">
           <button
             className="search-bar__button"
             type="submit"
@@ -133,6 +159,14 @@ export function SearchBar() {
           </button>
         </Tooltip>
       </form>
+
+      {/* Gatilho visível da dica: tooltip só no ícone da lupa ficaria escondido
+          de quem não passa o mouse por ali. showOnClick atende o toque. */}
+      <Tooltip text={SEARCH_HINT} position="bottom" showOnClick>
+        <button className="search-bar__help" type="button">
+          <span aria-hidden="true">ⓘ</span> Como pesquisar
+        </button>
+      </Tooltip>
 
       {/* aria-live: leitores de tela anunciam erro e resultado sem mover o foco. */}
       <p
