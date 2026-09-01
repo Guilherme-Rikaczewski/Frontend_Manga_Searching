@@ -1,6 +1,7 @@
 import { AppHeader } from '../../shared/components/AppHeader/AppHeader.jsx';
 import { SearchBar } from './components/SearchBar/SearchBar.jsx';
 import { useState } from 'react';
+import { MangaCard } from './components/MangaCard/MangaCard.jsx';
 
 import './HomePage.css';
 
@@ -19,13 +20,15 @@ export function HomePage() {
 
         <SearchBar setResult={setResult}/>
 
-        {result && (
+        {/* {result && (
           <div>
             {JSON.stringify(result)}
           </div>
-        )}
+        )} */}
+
 
       </section>
+      <MangaCard />
     </main>
   );
 }
