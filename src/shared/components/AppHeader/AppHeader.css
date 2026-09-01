@@ -1,6 +1,6 @@
 .app-header {
   width: 100%;
-  height: 94px;
+  height: 80px;
   /* background: rgba(232, 38, 38, 0.76); */
   background: #ed5a5a;
   display: flex;
@@ -9,11 +9,11 @@
 }
 
 .logo-header {
-  height: 65%;
+  height: 55%;
 }
 
 @media (max-width: 640px) {
   .app-header {
-    height: 78px;
+    height: 66px;
   }
 }
