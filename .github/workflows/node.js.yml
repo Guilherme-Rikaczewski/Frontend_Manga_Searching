@@ -57,6 +57,6 @@ jobs:
           script: |
             cd ~/manga
 
-            docker compose pull frontendmanga
+            docker compose pull frontmanga
 
-            docker compose up -d frontendmanga
+            docker compose up -d frontmanga
