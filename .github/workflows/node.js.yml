@@ -1,0 +1,62 @@
+name: CI/CD - Manga Searching Frontend
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+
+  build-and-push:
+
+    runs-on: ubuntu-latest
+
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            guilhermerikaczewski/manga-searching-frontend:latest
+            guilhermerikaczewski/manga-searching-frontend:${{ github.sha }}
+  
+  deploy:
+
+    needs: build-and-push
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Deploy to AWS
+        uses: appleboy/ssh-action@v1.2.0
+
+        with:
+          host: ${{ secrets.AWS_HOST }}
+          username: ${{ secrets.AWS_USERNAME }}
+          key: ${{ secrets.AWS_SSH_KEY }}
+
+          script: |
+            cd ~/manga
+
+            docker compose pull frontendmanga
+
+            docker compose up -d frontendmanga
