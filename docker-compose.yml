@@ -5,7 +5,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # image: guilhermerikaczewski/manga-searching-frontend:latest
     restart: always
     container_name: frontmanga
     ports:
       - "80:80"
+
+
+  # backendmanga:
+  #   # build: 
+  #   #   context: .
+  #   #   dockerfile: Dockerfile
+  #   image: guilhermerikaczewski/manga-searching-backend:latest
+  #   container_name: backendmanga
+  #   restart: always
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "8000:8000"

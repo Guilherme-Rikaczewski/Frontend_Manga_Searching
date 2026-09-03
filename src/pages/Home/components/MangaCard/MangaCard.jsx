@@ -7,7 +7,7 @@ export function MangaCard({ mangaInfo, media }) {
   }
 
   if (mangaInfo.nome.length > 60) {
-    mangaInfo.nome = mangaInfo.nome.slice(0, 57).trimEnd() + '...'
+    mangaInfo.nome = mangaInfo.nome.slice(0, 50).trimEnd() + '...'
   }
 
   if (!mangaInfo.preco) {
