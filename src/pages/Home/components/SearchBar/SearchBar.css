@@ -110,8 +110,9 @@
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #7a5c5c;
+  color: #ed5a5a;
   font-size: 0.8rem;
+  font-weight: 550;
   cursor: help; /* o cursor de interrogação já anuncia que ali tem explicação */
 }
 
